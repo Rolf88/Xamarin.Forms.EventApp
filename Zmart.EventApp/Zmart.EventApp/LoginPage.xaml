@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Zmart.EventApp.LoginPage">
+    <StackLayout
+            Orientation="Vertical"
+            VerticalOptions="FillAndExpand"
+            BackgroundColor="Black"
+            Spacing="10"
+            Padding="10">
+        <StackLayout
+            Orientation="Horizontal"
+            Spacing="10"
+            Padding="10">
+            <Label
+            Text="Please type in email and password and press login to login. If you haven't made a password yet, type in email and password and press signup"
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="White"
+            FontSize="Large"
+            FontAttributes="Bold"/>
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal"
+            Spacing="10"
+            Padding="10">
+            <Entry
+                x:Name="editEmail"
+            Keyboard="Email"
+            Placeholder="Email..."
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="White"
+            FontAttributes="Bold"/>
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal"
+            Spacing="10"
+            Padding="10">
+            <Entry
+                x:Name="editPassword"
+            IsPassword="True"
+            Placeholder="Password..."
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="White"
+            FontAttributes="Bold"/>
+        </StackLayout>
+        <StackLayout 
+            VerticalOptions="EndAndExpand"
+            Orientation="Horizontal"  
+            HorizontalOptions="FillAndExpand">
+            <Button 
+                x:Name="btnLogin"
+                HorizontalOptions="FillAndExpand"
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="Log In"/>
+            <Button 
+                x:Name="btnSignUp"
+                HorizontalOptions="FillAndExpand"
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="Sign Up"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
