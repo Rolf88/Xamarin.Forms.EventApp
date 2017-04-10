@@ -1,45 +1,120 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Diagnostics;
+using Acr.Notifications;
+using Estimotes;
 using Xamarin.Forms;
+using Zmart.EventApp.Models;
 
 namespace Zmart.EventApp
 {
     public partial class App : Application
     {
+        public static DBConnection Data { get; private set; }
+        public static bool IsBackgrounded { get; private set; }
+        public static IList<BeaconRegion> Regions { get; } = new List<BeaconRegion> {
+            new BeaconRegion("estimote",  "B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+        };
 
-        public App()
+        public App(string databasePath)
         {
-            InitializeComponent();
+            //InitializeComponent();
+            Data = new DBConnection(databasePath);
 
-            if (Application.Current.Properties.ContainsKey("token"))
+            this.MainPage = new TabbedPage
             {
-                //await Navigation.PushAsync(new CodedPages.CodedMainPage());
-                Application.Current.MainPage = new NavigationPage(new CodedPages.CodedMainPage());
-            }
-            else
-            {
-                //LoginPage logPage = new LoginPage();
-                //await Navigation.PushAsync(logPage);
-                Application.Current.MainPage = new NavigationPage(new LoginPage());
-            }
+                Children = {
+                    new NavigationPage(new RangingPage { Title = "Estimotes - Ranging" }) { Title = "Ranging" },
+                    new NavigationPage(new MainPage { Title = "Estimotes - Monitoring" }) { Title = "Monitoring" }
+                }
+            };
+
+            //if (Application.Current.Properties.ContainsKey("token"))
+            //{
+            //    Application.Current.MainPage = new NavigationPage(new CodedPages.CodedMainPage());
+            //}
+            //else
+            //{
+            //    Application.Current.MainPage = new NavigationPage(new LoginPage());
+            //}
         }
 
         protected override void OnStart()
         {
-            
+            base.OnStart();
+            App.IsBackgrounded = false;
+            EstimoteManager.Instance.Initialize().ContinueWith(x => OnBeaconMgrInit(x.Result));
+            Notifications.Instance.Badge = 0; // just waking up for permissions  
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+            base.OnSleep();
+            App.IsBackgrounded = true;
+            EstimoteManager.Instance.StopAllRanging();
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            base.OnResume();
+            App.IsBackgrounded = false;
         }
+
+        static void OnBeaconMgrInit(BeaconInitStatus status)
+        {
+            Debug.WriteLine($"Beacon Init Status: {status}");
+            if (status != BeaconInitStatus.Success)
+                return;
+
+            EstimoteManager.Instance.RegionStatusChanged += OnBeaconRegionStatusChanged;
+            EstimoteManager.Instance.StopAllMonitoring();
+            foreach (var region in Regions)
+            {
+                Debug.WriteLine($"Start Monitoring Region: {region}");
+                EstimoteManager.Instance.StartMonitoring(region);
+            }
+        }
+
+
+        static async void OnBeaconRegionStatusChanged(object sender, BeaconRegionStatusChangedEventArgs args)
+        {
+            App.Data.Insert(new BeaconPing
+            {
+                Identifier = args.Region.Identifier,
+                Uuid = args.Region.Uuid,
+                Major = args.Region.Major ?? 0,
+                Minor = args.Region.Minor ?? 0,
+                DateCreated = DateTime.Now,
+                Type = args.IsEntering ? BeaconPingType.MonitorEntering : BeaconPingType.MonitorExiting
+            });
+
+            if (!args.IsEntering)
+                Notifications.Instance.Send("Exited Region", $"You have exited {args.Region.Identifier}");
+            else
+            {
+                try
+                {
+                    var beacons = await EstimoteManager.Instance.FetchNearbyBeacons(args.Region);
+                    foreach (var beacon in beacons)
+                    {
+                        App.Data.Insert(new BeaconPing
+                        {
+                            Identifier = args.Region.Identifier,
+                            Uuid = beacon.Uuid,
+                            Major = beacon.Major,
+                            Minor = beacon.Minor,
+                            DateCreated = DateTime.Now,
+                            Type = App.IsBackgrounded ? BeaconPingType.RangedBackground : BeaconPingType.RangedForeground
+                        });
+                    }
+                    Notifications.Instance.Send("Entered Region", $"You have entered {args.Region.Identifier}");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+        }
+
     }
 }

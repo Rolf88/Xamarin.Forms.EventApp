@@ -1,11 +1,10 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+using Acr.UserDialogs;
 
 namespace Zmart.EventApp.Droid
 {
@@ -18,9 +17,11 @@ namespace Zmart.EventApp.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            var dbPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App());
+            Forms.Init(this, bundle);
+            UserDialogs.Init(() => (Activity)Forms.Context);
+            this.LoadApplication(new App(dbPath));
         }
     }
 }
