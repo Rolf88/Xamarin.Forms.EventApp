@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zmart.EventApp.Android", "Zmart.EventApp\Zmart.EventApp.Android\Zmart.EventApp.Android.csproj", "{1F2372BB-1B41-42C7-A131-F6EFAF2FDDC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZmartEventApp.Android", "Zmart.EventApp\Zmart.EventApp.Android\ZmartEventApp.Android.csproj", "{1F2372BB-1B41-42C7-A131-F6EFAF2FDDC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zmart.EventApp", "Zmart.EventApp\Zmart.EventApp\Zmart.EventApp.csproj", "{8CF9B7A8-5272-40AB-BD34-7208147E4ADB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZmartEventApp", "Zmart.EventApp\Zmart.EventApp\ZmartEventApp.csproj", "{8CF9B7A8-5272-40AB-BD34-7208147E4ADB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zmart.EventApp.UWP", "Zmart.EventApp\Zmart.EventApp.UWP\Zmart.EventApp.UWP.csproj", "{72B1E1A0-F423-4E95-BC2D-3A091CFC8D76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zmart.EventApp.iOS", "Zmart.EventApp\Zmart.EventApp.iOS\Zmart.EventApp.iOS.csproj", "{6B698BAC-B29B-408E-AA63-06ED6BDB6C39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZmartEventApp.iOS", "Zmart.EventApp\Zmart.EventApp.iOS\ZmartEventApp.iOS.csproj", "{6B698BAC-B29B-408E-AA63-06ED6BDB6C39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

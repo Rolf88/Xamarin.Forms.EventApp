@@ -5,7 +5,6 @@
     <StackLayout
             Orientation="Vertical"
             VerticalOptions="FillAndExpand"
-            BackgroundColor="Black"
             Spacing="10"
             Padding="10">
         <StackLayout
@@ -15,9 +14,10 @@
             <Label
             Text="Please type in email and password and press login to login. If you haven't made a password yet, type in email and password and press signup"
             HorizontalOptions="FillAndExpand"
-            BackgroundColor="White"
             FontSize="Large"
-            FontAttributes="Bold"/>
+            FontAttributes="Bold"
+            VerticalTextAlignment="Center"
+            HorizontalTextAlignment="Center"/>
         </StackLayout>
         <StackLayout
             Orientation="Horizontal"

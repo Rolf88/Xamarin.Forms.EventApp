@@ -5,6 +5,7 @@ using Acr.Notifications;
 using Estimotes;
 using Xamarin.Forms;
 using Zmart.EventApp.Models;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace Zmart.EventApp
 {
@@ -15,28 +16,39 @@ namespace Zmart.EventApp
         public static IList<BeaconRegion> Regions { get; } = new List<BeaconRegion> {
             new BeaconRegion("estimote",  "B9407F30-F5F8-466E-AFF9-25556B57FE6D")
         };
+        //public static MobileServiceClient MobileService = new MobileServiceClient("https://zmarteventapp.azurewebsites.net");
 
         public App(string databasePath)
         {
             //InitializeComponent();
             Data = new DBConnection(databasePath);
 
-            this.MainPage = new TabbedPage
-            {
-                Children = {
-                    new NavigationPage(new RangingPage { Title = "Estimotes - Ranging" }) { Title = "Ranging" },
-                    new NavigationPage(new MainPage { Title = "Estimotes - Monitoring" }) { Title = "Monitoring" }
-                }
-            };
+            var testList = new List<string>() { "1st", "2nd", "3rd", "4th", "5th", "6th" };
 
-            //if (Application.Current.Properties.ContainsKey("token"))
+            //this.MainPage = new TabbedPage
             //{
-            //    Application.Current.MainPage = new NavigationPage(new CodedPages.CodedMainPage());
-            //}
-            //else
-            //{
-            //    Application.Current.MainPage = new NavigationPage(new LoginPage());
-            //}
+            //    Children = {
+            //        new NavigationPage(new RangingPage { Title = "Estimotes - Ranging" }) { Title = "Ranging" },
+            //        new NavigationPage(new MainPage { Title = "Estimotes - Monitoring" }) { Title = "Monitoring" }
+            //    }
+            //};
+
+            if (Application.Current.Properties.ContainsKey("token"))
+            {
+                TabbedPage tabbedPage = new TabbedPage();
+                
+                foreach (var item in testList)
+                {
+                    tabbedPage.Children.Add(new NavigationPage(new CodedPages.CodedMainPage(item)) { Title = item});
+                }
+
+                Application.Current.MainPage = tabbedPage;
+                
+            }
+            else
+            {
+                Application.Current.MainPage = new NavigationPage(new LoginPage());
+            }
         }
 
         protected override void OnStart()

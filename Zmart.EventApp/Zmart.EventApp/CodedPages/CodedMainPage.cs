@@ -12,10 +12,10 @@ namespace Zmart.EventApp.CodedPages
         
         private Grid grid;
 
-        public CodedMainPage() {
-            Title = "Event App";
+        public CodedMainPage(string title) {
+            Title = title;
             var table1 = MakeTable();
-            var table2 = MakeTable();
+            //var table2 = MakeTable();
 
             grid = new Grid();
             grid.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -29,14 +29,14 @@ namespace Zmart.EventApp.CodedPages
 
             grid.ColumnDefinitions = new ColumnDefinitionCollection {
                 new ColumnDefinition{ },
-                new ColumnDefinition{ }
+                //new ColumnDefinition{ }
             };
 
             grid.Children.Add(new Label { Text = "Column 1", TextColor = Color.Aquamarine }, 0, 0);
-            grid.Children.Add(new Label { Text = "Column 2", TextColor = Color.DarkBlue }, 1, 0);
+            //grid.Children.Add(new Label { Text = "Column 2", TextColor = Color.DarkBlue }, 1, 0);
 
             grid.Children.Add(table1,0,1);
-            grid.Children.Add(table2,1,1);
+            //grid.Children.Add(table2,1,1);
 
             Content = grid;
         }
