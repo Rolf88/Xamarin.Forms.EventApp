@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Zmart.EventApp.ViewModels;
+using Zmart.EventApp.Models;
 
 namespace Zmart.EventApp.CodedPages
 {
     public class EventDetailPage : ContentPage 
     {
-        public EventDetailPage(EventViewModel viewModel) {
+        public EventDetailPage(EventModel viewModel) {
             Title = viewModel.Name;
 
             Button btn = new Button { Text = "Go Back",
@@ -28,6 +28,12 @@ namespace Zmart.EventApp.CodedPages
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Children = {
                     new Image{ Source = "icon.png", HeightRequest = 100, WidthRequest = 100, Margin = 10 },
+                    new Label{ Text = viewModel.StartTime + " - " + viewModel.StopTime,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        HorizontalOptions = LayoutOptions.Center,
+                        Margin = 20
+                    },
                     new Label{ Text = viewModel.Description,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,

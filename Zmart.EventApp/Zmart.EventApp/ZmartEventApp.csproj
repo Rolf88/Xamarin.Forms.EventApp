@@ -53,7 +53,7 @@
     </Compile>
     <Compile Include="ViewModels\BeaconViewModel.cs" />
     <Compile Include="ViewModels\CustomEventCell.cs" />
-    <Compile Include="ViewModels\EventViewModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
     <Compile Include="ViewModels\RangingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
