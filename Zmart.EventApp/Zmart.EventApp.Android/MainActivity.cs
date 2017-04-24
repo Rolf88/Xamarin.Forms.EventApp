@@ -17,11 +17,11 @@ namespace Zmart.EventApp.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-            var dbPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            //var dbPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
 
             Forms.Init(this, bundle);
             UserDialogs.Init(() => (Activity)Forms.Context);
-            this.LoadApplication(new App(dbPath));
+            this.LoadApplication(new App());
         }
     }
 }

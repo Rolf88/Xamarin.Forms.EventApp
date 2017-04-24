@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Zmart.EventApp.CodedPages;
 
 namespace Zmart.EventApp
 {
@@ -31,17 +32,22 @@ namespace Zmart.EventApp
                     Application.Current.Properties["password"] = password;
                     Application.Current.Properties["token"] = "myownwonderfulmadeuptokenhahahaha231455544";
 
-                    TabbedPage tabbedPage = new TabbedPage();
+                    //TabbedPage tabbedPage = new TabbedPage();
+                    //foreach (var item in testList)
+                    //{
+                    //    tabbedPage.Children.Add(new NavigationPage(new CodedMainPage(item)) { Title = item });
+                    //}
 
-                    foreach (var item in testList)
+                    App.masterDetailPage = new MasterDetailPage
                     {
-                        tabbedPage.Children.Add(new NavigationPage(new CodedPages.CodedMainPage(item)) { Title = item });
-                    }
+                        Master = new MenuPage(),
+                        Detail = App.tabbedPage,
+                    };
 
-                    Application.Current.MainPage = tabbedPage;
-                        //await Navigation.PushAsync(new CodedPages.CodedMainPage());
-                        //Navigation.RemovePage(this);
-                    }
+                    Application.Current.MainPage = App.masterDetailPage;
+                    //await Navigation.PushAsync(new CodedPages.CodedMainPage());
+                    //Navigation.RemovePage(this);
+                }
             };
         }
 

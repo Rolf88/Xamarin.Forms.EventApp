@@ -1,78 +1,129 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Zmart.EventApp.ViewModels;
 
 namespace Zmart.EventApp.CodedPages
 {
     public class CodedMainPage : ContentPage
     {
-        
-        private Grid grid;
+        public ObservableCollection<EventViewModel> eventItems { get; set; }
 
         public CodedMainPage(string title) {
+
             Title = title;
-            var table1 = MakeTable();
-            //var table2 = MakeTable();
+            
+            eventItems = new ObservableCollection<EventViewModel>();
+            ListView listView = new ListView();
+            listView.RowHeight = 100;
+            listView.ItemTemplate = new DataTemplate(typeof(CustomEventCell));
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla..."});
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            eventItems.Add(new EventViewModel { Name = "BestEvent", StartTime = "18:00", StopTime = "19:00", Image = "icon.png", Description = "blablabla..." });
+            listView.ItemsSource = eventItems;
 
-            grid = new Grid();
-            grid.HorizontalOptions = LayoutOptions.FillAndExpand;
-            grid.VerticalOptions = LayoutOptions.FillAndExpand;
-
-            grid.RowDefinitions = new RowDefinitionCollection
+            listView.ItemTapped += async (sender, e) =>
             {
-                new RowDefinition { Height = GridLength.Auto },
-                new RowDefinition { }
+                var eventItem = e.Item as EventViewModel;
+
+                await Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(eventItem)));
             };
 
-            grid.ColumnDefinitions = new ColumnDefinitionCollection {
-                new ColumnDefinition{ },
-                //new ColumnDefinition{ }
-            };
-
-            grid.Children.Add(new Label { Text = "Column 1", TextColor = Color.Aquamarine }, 0, 0);
-            //grid.Children.Add(new Label { Text = "Column 2", TextColor = Color.DarkBlue }, 1, 0);
-
-            grid.Children.Add(table1,0,1);
-            //grid.Children.Add(table2,1,1);
-
-            Content = grid;
+            Content = listView;
         }
-        
 
-        private TableView MakeTable() {
-            var table = new TableView() { Intent = TableIntent.Menu };
-            var root = new TableRoot();
-            var section1 = new TableSection() { Title = "First Section" };
-            var section2 = new TableSection() { Title = "Second Section" };
-            var section3 = new TableSection() { Title = "Third Section" };
-            var section4 = new TableSection() { Title = "Fourth Section" };
-            var section5 = new TableSection() { Title = "Fifth Section" };
+        //private ViewCell MakeTable() {
+        //    //var table = new TableView() { Intent = TableIntent.Menu };
+        //    //var root = new TableRoot();
+        //    //var section1 = new TableSection();
 
-            var text = new TextCell { Text = "TextCell", Detail = "TextCell Detail" };
-            var image = new ImageCell { Text = "ImageCell Text", Detail = "ImageCell Detail", ImageSource = "icon.png" };
+        //    //var text = new TextCell { Detail = "TextCell Detail" };
+        //    //var image = new ImageCell { Detail = "ImageCell Detail", ImageSource = "icon.png" };
+            
+        //    var viewCell = new ViewCell {
+        //        View = new StackLayout {
+        //            Orientation = StackOrientation.Horizontal,
+        //            VerticalOptions = LayoutOptions.FillAndExpand,
+        //            HorizontalOptions = LayoutOptions.FillAndExpand,
+        //            Children = {
+        //                new Label {
+        //                    Text = "18:30",
+        //                    FontSize = 15,
+        //                    VerticalTextAlignment = TextAlignment.Center,
+        //                    VerticalOptions = LayoutOptions.Center
+        //                },
+        //                new Image{
+        //                    Source = "icon.png",
+        //                    IsVisible = true,
+        //                    HeightRequest = 90,
+        //                    WidthRequest = 90
+        //                },
+        //                new Label{
+        //                    Text = "Some Very important text...",
+        //                    VerticalTextAlignment = TextAlignment.Center,
+        //                    VerticalOptions = LayoutOptions.Center
+        //                }
+        //            },
+        //        }  
+        //    };
 
-            section1.Add(text);
-            section1.Add(image);
-            section2.Add(text);
-            section2.Add(image);
-            section3.Add(text);
-            section3.Add(image);
-            section4.Add(text);
-            section4.Add(image);
-            section5.Add(text);
-            section5.Add(image);
+        //    //section1.Add(viewCell);
 
-            table.Root = root;
-            root.Add(section1);
-            root.Add(section2);
-            root.Add(section3);
-            root.Add(section4);
-            root.Add(section5);
+        //    //section1.Add(text);
+        //    //section1.Add(image);
 
-            return table;
-        }
+        //    //section2.Add(text);
+        //    //section2.Add(image);
+
+        //    //section3.Add(text);
+        //    //section3.Add(image);
+
+        //    //section4.Add(text);
+        //    //section4.Add(image);
+
+        //    //section5.Add(text);
+        //    //section5.Add(image);
+
+        //    //table.Root = root;
+
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+        //    //root.Add(section1);
+
+        //    return viewCell;
+        //}
     }
 }

@@ -29,7 +29,6 @@ namespace Zmart.EventApp.ViewModels
             var status = await EstimoteManager.Instance.Initialize();
             if (status != BeaconInitStatus.Success)
                 UserDialogs.Instance.Alert($"Beacon functionality failed - {status}");
-
             else
             {
                 foreach (var region in App.Regions)

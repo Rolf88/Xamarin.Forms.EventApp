@@ -15,10 +15,9 @@ namespace Zmart.EventApp.ViewModels
         {
             this.Information = $"{beacon.Proximity}";
             //			this.Information = $"{beacon.Proximity} {beacon.Identifier}";
-            this.Details = $"Major: {beacon.Major} - Minor: {beacon.Minor} - ID: {beacon.Uuid}";
+            this.Details = $"Distance: {beacon.Proximity} - Major: {beacon.Major} - Minor: {beacon.Minor} - ID: {beacon.Uuid}";
         }
-
-
+        
         public string Information { get; }
         public string Details { get; }
     }
