@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Zmart.EventApp.Handlers;
 using Zmart.EventApp.Models;
 using Zmart.EventApp.ViewModels;
 
@@ -14,10 +15,13 @@ namespace Zmart.EventApp.CodedPages
     public class CodedMainPage : ContentPage
     {
         //public ObservableCollection<EventModel> eventItems { get; set; }
+        SchemaHandler schemaHandler;
 
         public CodedMainPage(string title) {
 
-            Title = title;
+            Title = "It-Conference";
+
+            schemaHandler = new SchemaHandler();
 
             Grid calendarGrid = new Grid();
 
@@ -40,7 +44,7 @@ namespace Zmart.EventApp.CodedPages
             //Adds hours to the calendar
             int hours = 0;
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 49; i++)
             {
 
                 if (i % 2 == 0)
@@ -92,29 +96,48 @@ namespace Zmart.EventApp.CodedPages
 
             //EventList for tests
             var eventList = CreateEventsForTest();
-
+            //Count For Event Color
+            int count = 0;
+            int count2 = 0;
             //Add events to calendar.
             foreach (var item in eventList) {
+                
                 if (item.Track.Equals("track1"))
                 {
+                    count++;
                     calendarGrid.Children.Add(new StackLayout {
                         Orientation = StackOrientation.Horizontal,
-                        BackgroundColor = Color.DarkGreen,
-                        Children = { new Label { Text = item.Name + "\n" + item.StartTime + "\n  -\n" + item.StopTime }, new Label { Text = TruncateWord(item.Description), HorizontalOptions = LayoutOptions.Center}, new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29, HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.Start } },
+                        BackgroundColor = schemaHandler.CalendarColorManager(count),
+                        Children = { new Label { Text = schemaHandler.TruncateTitle(item.Name) + "\n" 
+                        + item.StartTime + "\n  -\n" + item.StopTime},
+                            new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29,
+                                HorizontalOptions = LayoutOptions.EndAndExpand,
+                                VerticalOptions = LayoutOptions.Start }
+                        },
                         GestureRecognizers = { new TapGestureRecognizer {
-                            Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item)))),
-                        } },
-                    }, 1, 2, ConvertStartTimeToRows(item.StartTime), ConvertStartTimeToRows(item.StartTime) + ConvertStopTimeToRows(item.StopTime, item.StartTime));
+                            Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item, false)))),
+                        }
+                        },
+                    }, 1, 2, schemaHandler.ConvertStartTimeToRows(item.StartTime), 
+                    schemaHandler.ConvertStartTimeToRows(item.StartTime) + schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
                 }
                 else {
+                    count2++;
                     calendarGrid.Children.Add(new StackLayout {
                         Orientation = StackOrientation.Horizontal,
-                        BackgroundColor = Color.DarkRed,
-                        Children = { new Label { Text = item.Name + "\n" + item.StartTime + "\n  -\n" + item.StopTime}, new Label { Text = TruncateWord(item.Description), HorizontalOptions = LayoutOptions.Center}, new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29, HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.Start } },
+                        BackgroundColor = schemaHandler.CalendarColorManager2(count2),
+                        Children = { new Label { Text = schemaHandler.TruncateTitle(item.Name) + "\n" 
+                        + item.StartTime + "\n  -\n" + item.StopTime},
+                            new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29,
+                                HorizontalOptions = LayoutOptions.EndAndExpand,
+                                VerticalOptions = LayoutOptions.Start }
+                        },
                         GestureRecognizers = { new TapGestureRecognizer {
-                            Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item)))),
-                        } },
-                    }, 2, 3, ConvertStartTimeToRows(item.StartTime), ConvertStartTimeToRows(item.StartTime) + ConvertStopTimeToRows(item.StopTime, item.StartTime));
+                            Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item, false)))),
+                        }
+                        },
+                    }, 2, 3, schemaHandler.ConvertStartTimeToRows(item.StartTime), 
+                    schemaHandler.ConvertStartTimeToRows(item.StartTime) + schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
                 }
             }
 
@@ -122,6 +145,7 @@ namespace Zmart.EventApp.CodedPages
                 Content = calendarGrid,
             };
 
+            //Save this bit of code to show different visual possibillities.
             //eventItems = new ObservableCollection<EventViewModel>();
             //ListView listView = new ListView();
             //listView.RowHeight = 100;
@@ -152,130 +176,61 @@ namespace Zmart.EventApp.CodedPages
             //Content = listView;
         }
 
-        private string TruncateWord(string description) {
-            var charArr = description.ToCharArray();
-            var result = "";
+        //For Truncating details if details should be shown in mainpage.
+        //private string TruncateWord(string description) {
+        //    var charArr = description.ToCharArray();
+        //    var result = "";
 
-            if (charArr.Length >= 10)
-            {
-                for (int i = 0; i < charArr.Length+1; i++)
-                {
-                    if (i == 20) {
-                        result += "...";
-                        break;
-                    }
-
-                    result += charArr[i].ToString();
-
-                    if (i != 0 && i%10 == 0) {
-                        result += "\n";
-                    }
-                }
-            }
-            else {
-                result = description;
-            }
-
-            return result;
-        }
-
-        private int ConvertStopTimeToRows(string timeStop, string timeStart) {
-            var stopSplitted = timeStop.Split(':');
-            var startSplitted = timeStart.Split(':');
-
-            var stopHour = Int32.Parse(stopSplitted[0]);
-            var startHour = Int32.Parse(startSplitted[0]);
-
-            var stopMin = Int32.Parse(stopSplitted[1]);
-            var startMin = Int32.Parse(startSplitted[1]);
-
-            double finalStop = 0;
-            double finalStart = 0;
-
-            if (stopMin==30)
-            {
-                finalStop = stopHour + 0.5;
-            }
-            else {
-                finalStop = stopHour;
-            }
-
-            if (startMin==30)
-            {
-                finalStart = startHour + 0.5;
-            }
-            else {
-                finalStart = startHour;
-            }
-
-            var res = ((finalStop - finalStart) * 2);
-
-            return (int)res;
-        }
-
-        //private int ConvertStopTimeToRows(string timeStop, string timeStart) {
-        //    var stopSplitted = timeStop.Split(':');
-        //    var startSplitted = timeStart.Split(':');
-
-        //    var stop = Int32.Parse(stopSplitted[0]);
-        //    var start = Int32.Parse(startSplitted[0]);
-
-        //    int res = stop - start;
-
-        //    if (res != 1)
+        //    if (charArr.Length >= 6)
         //    {
-        //        res++;
-        //    }
+        //        for (int i = 0; i < charArr.Length; i++)
+        //        {
+        //            if (i == 15) {
+        //                result += "...";
+        //                break;
+        //            }
 
-        //    if (!stopSplitted[1].Equals("30"))
-        //    {
-        //        res ++;
+        //            result += charArr[i].ToString();
+
+        //            if (i != 0 && i%6 == 0) {
+        //                result += "\n";
+        //            }
+        //        }
         //    }
         //    else {
-        //        res += 2;
+        //        result = description;
         //    }
 
-        //    return res;
+        //    return result;
         //}
-
-        private int ConvertStartTimeToRows(string timeStart) {
-            string[] timeSplitted = timeStart.Split(':');
-
-            var hour = Int32.Parse(timeSplitted[0]);
-
-            if (!timeSplitted[1].Equals("30"))
-            {
-                return (int)((hour + 0.5) * 2);
-            }
-            else {
-                return (int)((hour + 0.5) * 2)+1;
-            }
-        }
 
         private List<EventModel> CreateEventsForTest() {
             List<EventModel> eventList = new List<EventModel>();
 
             //eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "12:00", "13:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla", "icon.png", "12:00", "13:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "13:00", "14:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "13:00", "14:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "11:00", "13:00", "track1"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "11:00", "12:00", "track2"));
-            eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "01:00", "06:30", "track2"));
+            eventList.Add(new EventModel(1, "BestEvent", "blablablablablablablablablablablablablablablablablablablablablablablablablablablablabla" +
+                "blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla" +
+                "blablablablablablablablablablablablablablablablabla", "icon.png", "12:00", "13:00", "track2"));
+            eventList.Add(new EventModel(2, "BestEventttttttttttttttttttttttttttttttttt", "blablabla", "icon.png", "13:00", "14:00", "track1"));
+            eventList.Add(new EventModel(3, "BestEvent", "blablabla", "icon.png", "13:00", "14:00", "track2"));
+            eventList.Add(new EventModel(4, "BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track1"));
+            eventList.Add(new EventModel(5, "BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track2"));
+            eventList.Add(new EventModel(6, "BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track1"));
+            eventList.Add(new EventModel(7, "BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track2"));
+            eventList.Add(new EventModel(8, "BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track1"));
+            eventList.Add(new EventModel(9, "BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track2"));
+            eventList.Add(new EventModel(10, "BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track1"));
+            eventList.Add(new EventModel(11, "BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track2"));
+            eventList.Add(new EventModel(12, "BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track1"));
+            eventList.Add(new EventModel(13, "BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track2"));
+            eventList.Add(new EventModel(14, "BestEvent", "blablabla", "icon.png", "11:00", "13:00", "track1"));
+            eventList.Add(new EventModel(15, "BestEvent", "blablabla", "icon.png", "11:00", "12:00", "track2"));
+            eventList.Add(new EventModel(16, "BestEvent", "blablabla", "icon.png", "01:00", "06:30", "track2"));
 
             return eventList;
         }
 
+        //For a TableView instead of the calendar Gridview.
         //private ViewCell MakeTable() {
         //    //var table = new TableView() { Intent = TableIntent.Menu };
         //    //var root = new TableRoot();
