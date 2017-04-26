@@ -17,9 +17,7 @@ namespace Zmart.EventApp.CodedPages
         public PersonalSchema() {
 
             Title = "Personal Schema";
-
-
-
+            
             schemaHandler = new SchemaHandler();
 
             Grid calendarGrid = new Grid();
