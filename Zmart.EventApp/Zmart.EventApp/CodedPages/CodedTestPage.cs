@@ -27,7 +27,7 @@ namespace Zmart.EventApp.CodedPages
 
         private Label CreateLabel() {
             Label lbl = new Label();
-            lbl.Text = "Please hold your device up against the beacon, until you're logged in.";
+            lbl.Text = "Enter conference to use app.";
             lbl.TextColor = Color.DarkSlateBlue;
             lbl.FontFamily = "Bold";
             lbl.FontSize = 25;

@@ -8,15 +8,22 @@ namespace Zmart.EventApp.Models
 {
     public class Conference
     {
-        public Conference() { }
+        public Conference() {
+            Dates = new List<string>();
+            Events = new List<EventModel>();
+        }
 
-        public Conference(string name, string adress, string city, string country, string phoneNumber, string details) {
+        public Conference(string name, string adress, string city, string country, string phoneNumber, string details, List<string> dates) {
+            Dates = new List<string>();
+            Events = new List<EventModel>();
             Name = name;
             Adress = adress;
             City = city;
             Country = country;
             PhoneNumber = phoneNumber;
             Details = details;
+            Dates.Clear();
+            Dates.AddRange(dates);
         }
 
         public string Name { get; set; }
@@ -25,5 +32,17 @@ namespace Zmart.EventApp.Models
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
         public string Details { get; set; }
+        public List<string> Dates { get; }
+        public List<EventModel> Events { get; }
+
+        public void SetEvents(List<EventModel> events) {
+            Events.Clear();
+            Events.AddRange(events);
+        }
+
+        public void SetDates(List<string> dates) {
+            Dates.Clear();
+            Dates.AddRange(dates);
+        }
     }
 }

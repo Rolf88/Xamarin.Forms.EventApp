@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,13 +16,24 @@ namespace Zmart.EventApp.CodedPages
     public class CodedMainPage : ContentPage
     {
         //public ObservableCollection<EventModel> eventItems { get; set; }
-        SchemaHandler schemaHandler;
+        SchemaHandler _schemaHandler;
+        List<EventModel> events;
 
-        public CodedMainPage(string title) {
+        public CodedMainPage(string date) {
 
             Title = "It-Conference";
 
-            schemaHandler = new SchemaHandler();
+            events = new List<EventModel>();
+            var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
+
+            foreach (var eventItem in conference.Events)
+            {
+                if (eventItem.Date.Equals(date)) {
+                    events.Add(eventItem);
+                }
+            }
+
+            _schemaHandler = new SchemaHandler();
 
             Grid calendarGrid = new Grid();
 
@@ -93,22 +105,20 @@ namespace Zmart.EventApp.CodedPages
                     new Label{ Text = "Track 2", FontSize = 20, FontAttributes = FontAttributes.Bold, HorizontalTextAlignment = TextAlignment.Center}
                 },
             }, 2, 0);
-
-            //EventList for tests
-            var eventList = CreateEventsForTest();
+            
             //Count For Event Color
             int count = 0;
             int count2 = 0;
             //Add events to calendar.
-            foreach (var item in eventList) {
+            foreach (var item in events) {
                 
                 if (item.Track.Equals("track1"))
                 {
                     count++;
                     calendarGrid.Children.Add(new StackLayout {
                         Orientation = StackOrientation.Horizontal,
-                        BackgroundColor = schemaHandler.CalendarColorManager(count),
-                        Children = { new Label { Text = schemaHandler.TruncateTitle(item.Name) + "\n" 
+                        BackgroundColor = _schemaHandler.CalendarColorManager(count),
+                        Children = { new Label { Text = _schemaHandler.TruncateTitle(item.Name) + "\n" 
                         + item.StartTime + "\n  -\n" + item.StopTime},
                             new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29,
                                 HorizontalOptions = LayoutOptions.EndAndExpand,
@@ -118,15 +128,15 @@ namespace Zmart.EventApp.CodedPages
                             Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item, false)))),
                         }
                         },
-                    }, 1, 2, schemaHandler.ConvertStartTimeToRows(item.StartTime), 
-                    schemaHandler.ConvertStartTimeToRows(item.StartTime) + schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
+                    }, 1, 2, _schemaHandler.ConvertStartTimeToRows(item.StartTime), 
+                    _schemaHandler.ConvertStartTimeToRows(item.StartTime) + _schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
                 }
                 else {
                     count2++;
                     calendarGrid.Children.Add(new StackLayout {
                         Orientation = StackOrientation.Horizontal,
-                        BackgroundColor = schemaHandler.CalendarColorManager2(count2),
-                        Children = { new Label { Text = schemaHandler.TruncateTitle(item.Name) + "\n" 
+                        BackgroundColor = _schemaHandler.CalendarColorManager2(count2),
+                        Children = { new Label { Text = _schemaHandler.TruncateTitle(item.Name) + "\n" 
                         + item.StartTime + "\n  -\n" + item.StopTime},
                             new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29,
                                 HorizontalOptions = LayoutOptions.EndAndExpand,
@@ -136,8 +146,8 @@ namespace Zmart.EventApp.CodedPages
                             Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item, false)))),
                         }
                         },
-                    }, 2, 3, schemaHandler.ConvertStartTimeToRows(item.StartTime), 
-                    schemaHandler.ConvertStartTimeToRows(item.StartTime) + schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
+                    }, 2, 3, _schemaHandler.ConvertStartTimeToRows(item.StartTime), 
+                    _schemaHandler.ConvertStartTimeToRows(item.StartTime) + _schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
                 }
             }
 
@@ -210,22 +220,22 @@ namespace Zmart.EventApp.CodedPages
             //eventList.Add(new EventModel("BestEvent", "blablabla", "icon.png", "12:00", "13:00", "track1"));
             eventList.Add(new EventModel(1, "BestEvent", "blablablablablablablablablablablablablablablablablablablablablablablablablablablablabla" +
                 "blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla" +
-                "blablablablablablablablablablablablablablablablabla", "icon.png", "12:00", "13:00", "track2"));
-            eventList.Add(new EventModel(2, "BestEventttttttttttttttttttttttttttttttttt", "blablabla", "icon.png", "13:00", "14:00", "track1"));
-            eventList.Add(new EventModel(3, "BestEvent", "blablabla", "icon.png", "13:00", "14:00", "track2"));
-            eventList.Add(new EventModel(4, "BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track1"));
-            eventList.Add(new EventModel(5, "BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track2"));
-            eventList.Add(new EventModel(6, "BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track1"));
-            eventList.Add(new EventModel(7, "BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track2"));
-            eventList.Add(new EventModel(8, "BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track1"));
-            eventList.Add(new EventModel(9, "BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track2"));
-            eventList.Add(new EventModel(10, "BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track1"));
-            eventList.Add(new EventModel(11, "BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track2"));
-            eventList.Add(new EventModel(12, "BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track1"));
-            eventList.Add(new EventModel(13, "BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track2"));
-            eventList.Add(new EventModel(14, "BestEvent", "blablabla", "icon.png", "11:00", "13:00", "track1"));
-            eventList.Add(new EventModel(15, "BestEvent", "blablabla", "icon.png", "11:00", "12:00", "track2"));
-            eventList.Add(new EventModel(16, "BestEvent", "blablabla", "icon.png", "01:00", "06:30", "track2"));
+                "blablablablablablablablablablablablablablablablabla", "icon.png", "12:00", "13:00", "track2", "1st day"));
+            eventList.Add(new EventModel(2, "BestEventttttttttttttttttttttttttttttttttt", "blablabla", "icon.png", "13:00", "14:00", "track1", "1st day"));
+            eventList.Add(new EventModel(3, "BestEvent", "blablabla", "icon.png", "13:00", "14:00", "track2", "1st day"));
+            eventList.Add(new EventModel(4, "BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track1", "1st day"));
+            eventList.Add(new EventModel(5, "BestEvent", "blablabla", "icon.png", "14:00", "15:00", "track2", "1st day"));
+            eventList.Add(new EventModel(6, "BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track1", "2nd day"));
+            eventList.Add(new EventModel(7, "BestEvent", "blablabla", "icon.png", "15:00", "16:00", "track2", "1st day"));
+            eventList.Add(new EventModel(8, "BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track1", "2nd day"));
+            eventList.Add(new EventModel(9, "BestEvent", "blablabla", "icon.png", "16:00", "17:00", "track2", "1st day"));
+            eventList.Add(new EventModel(10, "BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track1", "1st day"));
+            eventList.Add(new EventModel(11, "BestEvent", "blablabla", "icon.png", "17:00", "18:00", "track2", "1st day"));
+            eventList.Add(new EventModel(12, "BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track1", "2nd day"));
+            eventList.Add(new EventModel(13, "BestEvent", "blablabla", "icon.png", "10:00", "11:00", "track2", "2nd day"));
+            eventList.Add(new EventModel(14, "BestEvent", "blablabla", "icon.png", "11:00", "13:00", "track1", "1st day"));
+            eventList.Add(new EventModel(15, "BestEvent", "blablabla", "icon.png", "11:00", "12:00", "track2", "1st day"));
+            eventList.Add(new EventModel(16, "BestEvent", "blablabla", "icon.png", "01:00", "06:30", "track2", "1st day"));
 
             return eventList;
         }

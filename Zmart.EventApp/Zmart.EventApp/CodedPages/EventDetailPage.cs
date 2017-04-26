@@ -53,7 +53,7 @@ namespace Zmart.EventApp.CodedPages
                     await Navigation.PopModalAsync();
                 }
                 else {
-                    App.masterDetailPage.Detail = new NavigationPage(new PersonalSchema());
+                    NavigateToPersonalSchema();
                 }
             };
 
@@ -87,6 +87,19 @@ namespace Zmart.EventApp.CodedPages
             };
         }
 
+        private void NavigateToPersonalSchema()
+        {
+            var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
+            TabbedPage tabbedPage = new TabbedPage();
+
+            foreach (var date in conference.Dates)
+            {
+                tabbedPage.Children.Add(new NavigationPage(new PersonalSchema(date)) { Title = date });
+            }
+
+            App.masterDetailPage.Detail = tabbedPage;
+        }
+
         private void RegBtn_Clicked1(object sender, EventArgs e)
         {
             List<EventModel> eventList = JsonConvert.DeserializeObject<List<EventModel>>(Application.Current.Properties["personalSchema"].ToString());
@@ -96,7 +109,7 @@ namespace Zmart.EventApp.CodedPages
             Application.Current.Properties["personalSchema"] = JsonConvert.SerializeObject(eventList);
             
             DisplayAlert("", "event have been removed", "Ok");
-            App.masterDetailPage.Detail = new NavigationPage(new PersonalSchema());
+            NavigateToPersonalSchema();
         }
 
         private void RegBtn_Clicked(object sender, EventArgs e)

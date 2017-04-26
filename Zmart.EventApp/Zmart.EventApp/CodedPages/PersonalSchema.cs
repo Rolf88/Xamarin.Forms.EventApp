@@ -14,7 +14,7 @@ namespace Zmart.EventApp.CodedPages
     {
         SchemaHandler schemaHandler;
 
-        public PersonalSchema() {
+        public PersonalSchema(string  date) {
 
             Title = "Personal Schema";
             
@@ -98,7 +98,13 @@ namespace Zmart.EventApp.CodedPages
             List<EventModel> eventList = new List<EventModel>();
 
             if (Application.Current.Properties.ContainsKey("personalSchema")) {
-                eventList = JsonConvert.DeserializeObject<List<EventModel>>(Application.Current.Properties["personalSchema"].ToString());
+                
+                foreach (var eventItem in JsonConvert.DeserializeObject<List<EventModel>>(Application.Current.Properties["personalSchema"].ToString()))
+                {
+                    if (eventItem.Date.Equals(date)) {
+                        eventList.Add(eventItem);
+                    }
+                }
 
                 //Count For Event Color
                 int count = 0;
@@ -145,8 +151,5 @@ namespace Zmart.EventApp.CodedPages
                 Content = calendarGrid,
             };
         }
-
-        
-
     }
 }

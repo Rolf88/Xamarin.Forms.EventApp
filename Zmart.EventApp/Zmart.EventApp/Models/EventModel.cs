@@ -8,7 +8,7 @@ namespace Zmart.EventApp.Models
 {
     public class EventModel
     {
-        public EventModel(int id, string name, string description, string image, string startTime, string stopTime, string track) {
+        public EventModel(int id, string name, string description, string image, string startTime, string stopTime, string track, string date) {
             Id = id;
             Name = name;
             Description = description;
@@ -16,6 +16,7 @@ namespace Zmart.EventApp.Models
             StartTime = startTime;
             StopTime = stopTime;
             Track = track;
+            Date = date;
         }
 
         public int Id { get; set; }
@@ -25,6 +26,7 @@ namespace Zmart.EventApp.Models
         public string Image { get; set; }
         public string Name { get; set; }
         public string Track { get; set; }
+        public string Date { get; set; }
 
         public override bool Equals(object obj)
         {

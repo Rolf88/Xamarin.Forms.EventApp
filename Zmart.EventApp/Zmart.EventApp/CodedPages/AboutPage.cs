@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace Zmart.EventApp.CodedPages
                 await Navigation.PopModalAsync();
             };
 
-            var conference = ConferenceMaker();
+            var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
 
             var stackLay = new StackLayout {
                 Orientation = StackOrientation.Vertical,
@@ -39,17 +40,19 @@ namespace Zmart.EventApp.CodedPages
                         HorizontalTextAlignment = TextAlignment.Center,
                         FontAttributes = FontAttributes.Bold,
                         FontSize = 40,
-                    },
+                        TextColor = Color.Black                    },
                     new StackLayout{
                         Orientation = StackOrientation.Horizontal,
                         Children ={
                             new Label{ Text = conference.Adress + "\n" + conference.City + "\n" + conference.Country,
                                 HorizontalOptions = LayoutOptions.Start,
                                 FontSize = 20,
+                                TextColor = Color.Blue
                             },
                             new Label{ Text = conference.PhoneNumber,
                                 HorizontalOptions = LayoutOptions.Center,
                                 FontSize = 20,
+                                TextColor = Color.Blue
                             },
                         },
                     },
@@ -58,7 +61,8 @@ namespace Zmart.EventApp.CodedPages
                         HorizontalOptions = LayoutOptions.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
                         FontSize = 25,
-                    },
+                        TextColor = Color.Black
+                       },
                     },
                     new StackLayout{
                         VerticalOptions = LayoutOptions.EndAndExpand,
@@ -70,20 +74,6 @@ namespace Zmart.EventApp.CodedPages
             };
 
             Content = stackLay;
-        }
-
-        private Conference ConferenceMaker() {
-            Conference conference = new Conference();
-
-            conference.Name = "IT-MagicEvent";
-            conference.Adress = "Blabla Parken 3";
-            conference.City = "Ballerup";
-            conference.Country = "Danmark";
-            conference.PhoneNumber = "+45 88 88 88 88";
-            conference.Details = "Blablablablablablablablablablablablablablablablablablablablablablablabla" +
-                "blablablablablablablablablablablablablablablablablablablablabla";
-
-            return conference;
         }
     }
 }

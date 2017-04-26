@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,7 +39,14 @@ namespace Zmart.EventApp.CodedPages
 
         private void PersonalSchemaPage_Clicked(object sender, EventArgs e)
         {
-            App.masterDetailPage.Detail = new NavigationPage(new PersonalSchema { Title = "Personal Schema" }) { Title = "Personal Schema" };
+            TabbedPage tabbedPage = new TabbedPage();
+            var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
+            foreach (var date in conference.Dates)
+            {
+                tabbedPage.Children.Add(new NavigationPage(new PersonalSchema(date)) { Title = date });
+            }
+
+            App.masterDetailPage.Detail = tabbedPage;
             App.masterDetailPage.IsPresented = false;
         }
 
