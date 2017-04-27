@@ -14,15 +14,35 @@ namespace Zmart.EventApp.CodedPages
         public CodedTestPage() {
             Title = "Registration";
 
-            Content = new StackLayout {
+            Content = new StackLayout
+            {
+                BackgroundColor = Color.White,
                 Orientation = StackOrientation.Vertical,
-                VerticalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 Children = {
-                    CreateLabel(),
-                },
+                    new StackLayout{
+                        BackgroundColor = Color.White,
+                        Orientation = StackOrientation.Vertical,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        Children={
+                            CreateLabel(),
+                            CreateImage()
+                        }
+                    },
+                }
             };
-            
-                StartBeaconRanging();
+
+            StartBeaconRanging();
+        }
+
+        private Image CreateImage() {
+            Image img = new Image();
+            img.Source = "conference.png";
+            img.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            img.VerticalOptions = LayoutOptions.CenterAndExpand;
+            return img;
         }
 
         private Label CreateLabel() {
@@ -33,8 +53,8 @@ namespace Zmart.EventApp.CodedPages
             lbl.FontSize = 25;
             lbl.VerticalTextAlignment = TextAlignment.Center;
             lbl.HorizontalTextAlignment = TextAlignment.Center;
-            lbl.HorizontalOptions = LayoutOptions.Center;
-            lbl.VerticalOptions = LayoutOptions.Center;
+            lbl.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            lbl.VerticalOptions = LayoutOptions.CenterAndExpand;
             return lbl;
         }
 
