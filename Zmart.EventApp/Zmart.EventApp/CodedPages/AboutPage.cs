@@ -43,17 +43,30 @@ namespace Zmart.EventApp.CodedPages
                         TextColor = Color.Black                    },
                     new StackLayout{
                         Orientation = StackOrientation.Horizontal,
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
                         Children ={
-                            new Label{ Text = conference.Adress + "\n" + conference.City + "\n" + conference.Country,
-                                HorizontalOptions = LayoutOptions.Start,
-                                FontSize = 20,
-                                TextColor = Color.Blue
+                            new StackLayout{
+                                Orientation = StackOrientation.Horizontal,
+                                HorizontalOptions= LayoutOptions.StartAndExpand,
+                                Children ={
+                                    new Label{ Text = conference.Adress + "\n" + conference.City + "\n" + conference.Country,
+                                        HorizontalOptions = LayoutOptions.StartAndExpand,
+                                        FontSize = 20,
+                                        TextColor = Color.Blue
+                                     },
+                                     },
+                                    },
+                            new StackLayout{
+                                Orientation = StackOrientation.Horizontal,
+                                HorizontalOptions= LayoutOptions.EndAndExpand,
+                                Children = {
+                                    new Label{ Text = conference.PhoneNumber,
+                                        HorizontalOptions = LayoutOptions.EndAndExpand,
+                                        FontSize = 20,
+                                        TextColor = Color.Blue
                             },
-                            new Label{ Text = conference.PhoneNumber,
-                                HorizontalOptions = LayoutOptions.Center,
-                                FontSize = 20,
-                                TextColor = Color.Blue
-                            },
+                                },
+                            }
                         },
                     },
                     new ScrollView{

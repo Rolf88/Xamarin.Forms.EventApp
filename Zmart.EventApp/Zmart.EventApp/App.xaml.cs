@@ -69,7 +69,7 @@ namespace Zmart.EventApp
 
             conference.Name = "IT-MagicEvent";
             conference.Adress = "Blabla Parken 3";
-            conference.City = "Ballerup";
+            conference.City = "2750 Ballerup";
             conference.Country = "Danmark";
             conference.PhoneNumber = "+45 88 88 88 88";
             conference.Details = "Blablablablablablablablablablablablablablablablablablablablablablablabla" +
