@@ -34,7 +34,10 @@ namespace Zmart.EventApp.CodedPages
                 }
             };
 
-            StartBeaconRanging();
+            //StartBeaconRanging();
+            Application.Current.Properties["firstLogin"] = "true";
+            Application.Current.MainPage = App.masterDetailPage;
+            //UserDialogs.Instance.Alert("Welcome for the first time!!!!", "Welcome Message Box");
         }
 
         private Image CreateImage() {

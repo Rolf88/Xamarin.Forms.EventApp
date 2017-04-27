@@ -34,14 +34,14 @@ namespace Zmart.EventApp
         }
 
         private void StartUpNavigation() {
-            if (Application.Current.Properties.ContainsKey("firstLogin"))
-            {
+            //if (Application.Current.Properties.ContainsKey("firstLogin"))
+            //{
                 Application.Current.MainPage = masterDetailPage;
-            }
-            else
-            {
-                Application.Current.MainPage = new NavigationPage(new CodedTestPage());
-            }
+            //}
+            //else
+            //{
+            //    Application.Current.MainPage = new NavigationPage(new CodedTestPage());
+            //}
         }
 
         private void CreateMainPages() {

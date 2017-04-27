@@ -17,27 +17,41 @@ namespace Zmart.EventApp.CodedPages
             MainLink aboutPage = new MainLink("About");
             MainLink personalSchemaPage = new MainLink("Personal Schema");
 
-            forsideLink.Clicked += ForsideLink_Clicked;
-            rangingPage.Clicked += RangingPage_Clicked;
-            aboutPage.Clicked += AboutPage_Clicked;
-            personalSchemaPage.Clicked += PersonalSchemaPage_Clicked;
+            forsideLink.GestureRecognizers.Add(new TapGestureRecognizer{Command = new Command(() => ForsideLink_Clicked())});
+
+            rangingPage.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => RangingPage_Clicked()) });
+            aboutPage.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => AboutPage_Clicked()) });
+            personalSchemaPage.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => PersonalSchemaPage_Clicked()) });
 
             Content = new StackLayout
             {
-                Padding = new Thickness(0, Device.OnPlatform<int>(20, 0, 0), 0, 0),
+                //Padding = new Thickness(0, Device.OnPlatform<int>(20, 0, 0), 0, 0),
                 Children = {
+                    new StackLayout{
+                        Padding = new Thickness(0,20,0,10),
+                        Orientation = StackOrientation.Horizontal,
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                        BackgroundColor = Color.White,
+                      Children = {
+                            new Image{
+                        Source = "conference.png",
+                        HeightRequest = 50,
+                        WidthRequest = 50
+                            },
+                        },
+                    },
                 forsideLink,
                 aboutPage,
                 personalSchemaPage,
                 rangingPage
             }
             };
-            Title = "Master";
+            Title = "Menu";
             BackgroundColor = Color.Gray.WithLuminosity(0.9);
             Icon = Device.OS == TargetPlatform.iOS ? "menu.png" : null;
         }
 
-        private void PersonalSchemaPage_Clicked(object sender, EventArgs e)
+        private void PersonalSchemaPage_Clicked()
         {
             TabbedPage tabbedPage = new TabbedPage();
             var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
@@ -50,19 +64,19 @@ namespace Zmart.EventApp.CodedPages
             App.masterDetailPage.IsPresented = false;
         }
 
-        private void AboutPage_Clicked(object sender, EventArgs e)
+        private void AboutPage_Clicked()
         {
-            Navigation.PushModalAsync(new NavigationPage(new AboutPage { Title = "About" }) { Title = "About" });
+            App.masterDetailPage.Detail = new NavigationPage(new AboutPage { Title = "About" }) { Title = "About" };
             App.masterDetailPage.IsPresented = false;
         }
 
-        private void RangingPage_Clicked(object sender, EventArgs e)
+        private void RangingPage_Clicked()
         {
             App.masterDetailPage.Detail = new NavigationPage(new RangingPage { Title = "Estimotes - Ranging" }) { Title = "Ranging" };
             App.masterDetailPage.IsPresented = false;
         }
 
-        private void ForsideLink_Clicked(object sender, EventArgs e)
+        private void ForsideLink_Clicked()
         {
             App.masterDetailPage.Detail = App.tabbedPage;
             App.masterDetailPage.IsPresented = false;

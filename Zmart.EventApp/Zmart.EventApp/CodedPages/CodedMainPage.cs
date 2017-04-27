@@ -64,7 +64,7 @@ namespace Zmart.EventApp.CodedPages
                     StackLayout stackLay = new StackLayout
                     {
                         Children = {
-                        new Label { Text = hours + ":00", HeightRequest = 30, BackgroundColor = Color.White, HorizontalTextAlignment = TextAlignment.Center,
+                        new Label { Text = hours + ":00", HeightRequest = 30, FontSize = 10, BackgroundColor = Color.White, HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Center, VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.FillAndExpand},
                     },
@@ -79,7 +79,7 @@ namespace Zmart.EventApp.CodedPages
                     calendarGrid.Children.Add(new StackLayout
                     {
                         Children = {
-                        new Label { Text = hours + ":30", HeightRequest = 30, BackgroundColor = Color.White, HorizontalTextAlignment = TextAlignment.Center,
+                        new Label { Text = hours + ":30", HeightRequest = 30, FontSize = 10, BackgroundColor = Color.White, HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Center, VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.FillAndExpand},
                     },
@@ -118,9 +118,9 @@ namespace Zmart.EventApp.CodedPages
                     calendarGrid.Children.Add(new StackLayout {
                         Orientation = StackOrientation.Horizontal,
                         BackgroundColor = _schemaHandler.CalendarColorManager(count),
-                        Children = { new Label { Text = _schemaHandler.TruncateTitle(item.Name) + "\n" 
+                        Children = { new Label {FontSize = 10, Text = _schemaHandler.TruncateTitle(item.Name) + "\n" 
                         + item.StartTime + "\n  -\n" + item.StopTime},
-                            new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29,
+                            new Image { Source = "icon.png", HeightRequest = 20, WidthRequest = 20,
                                 HorizontalOptions = LayoutOptions.EndAndExpand,
                                 VerticalOptions = LayoutOptions.Start }
                         },
@@ -136,9 +136,9 @@ namespace Zmart.EventApp.CodedPages
                     calendarGrid.Children.Add(new StackLayout {
                         Orientation = StackOrientation.Horizontal,
                         BackgroundColor = _schemaHandler.CalendarColorManager2(count2),
-                        Children = { new Label { Text = _schemaHandler.TruncateTitle(item.Name) + "\n" 
+                        Children = { new Label {FontSize = 10, Text = _schemaHandler.TruncateTitle(item.Name) + "\n" 
                         + item.StartTime + "\n  -\n" + item.StopTime},
-                            new Image { Source = "icon.png", HeightRequest = 29, WidthRequest = 29,
+                            new Image { Source = "icon.png", HeightRequest = 20, WidthRequest = 20,
                                 HorizontalOptions = LayoutOptions.EndAndExpand,
                                 VerticalOptions = LayoutOptions.Start }
                         },

@@ -14,17 +14,17 @@ namespace Zmart.EventApp.CodedPages
         public AboutPage() {
             Title = "About";
 
-            Button btn = new Button
-            {
-                Text = "Go Back",
-                TextColor = Color.White,
-                BackgroundColor = Color.Blue,
-                VerticalOptions = LayoutOptions.End
-            };
+            //Button btn = new Button
+            //{
+            //    Text = "Go Back",
+            //    TextColor = Color.White,
+            //    BackgroundColor = Color.Blue,
+            //    VerticalOptions = LayoutOptions.End
+            //};
 
-            btn.Clicked += async (object sender, EventArgs e) => {
-                await Navigation.PopModalAsync();
-            };
+            //btn.Clicked += async (object sender, EventArgs e) => {
+            //    await Navigation.PopModalAsync();
+            //};
 
             var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
 
@@ -39,7 +39,7 @@ namespace Zmart.EventApp.CodedPages
                         VerticalOptions = LayoutOptions.Start,
                         HorizontalTextAlignment = TextAlignment.Center,
                         FontAttributes = FontAttributes.Bold,
-                        FontSize = 40,
+                        FontSize = 35,
                         TextColor = Color.Black                    },
                     new StackLayout{
                         Orientation = StackOrientation.Horizontal,
@@ -51,7 +51,7 @@ namespace Zmart.EventApp.CodedPages
                                 Children ={
                                     new Label{ Text = conference.Adress + "\n" + conference.City + "\n" + conference.Country,
                                         HorizontalOptions = LayoutOptions.StartAndExpand,
-                                        FontSize = 20,
+                                        FontSize = 15,
                                         TextColor = Color.Blue
                                      },
                                      },
@@ -62,7 +62,7 @@ namespace Zmart.EventApp.CodedPages
                                 Children = {
                                     new Label{ Text = conference.PhoneNumber,
                                         HorizontalOptions = LayoutOptions.EndAndExpand,
-                                        FontSize = 20,
+                                        FontSize = 15,
                                         TextColor = Color.Blue
                             },
                                 },
@@ -77,12 +77,12 @@ namespace Zmart.EventApp.CodedPages
                         TextColor = Color.Black
                        },
                     },
-                    new StackLayout{
-                        VerticalOptions = LayoutOptions.EndAndExpand,
-                        Children = {
-                            btn,
-                        }
-                    }
+                    //new StackLayout{
+                    //    VerticalOptions = LayoutOptions.EndAndExpand,
+                    //    Children = {
+                    //        btn,
+                    //    }
+                    //}
                 }
             };
 
