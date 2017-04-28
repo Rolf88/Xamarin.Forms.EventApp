@@ -125,7 +125,7 @@ namespace Zmart.EventApp.CodedPages
                                 VerticalOptions = LayoutOptions.Start }
                         },
                         GestureRecognizers = { new TapGestureRecognizer {
-                            Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item, false)))),
+                            Command = new Command(()=> App.masterDetailPage.Detail = new NavigationPage(new EventDetailPage(item, false)){ BarBackgroundColor = Color.Green}),
                         }
                         },
                     }, 1, 2, _schemaHandler.ConvertStartTimeToRows(item.StartTime), 
@@ -143,7 +143,7 @@ namespace Zmart.EventApp.CodedPages
                                 VerticalOptions = LayoutOptions.Start }
                         },
                         GestureRecognizers = { new TapGestureRecognizer {
-                            Command = new Command(()=> Navigation.PushModalAsync(new NavigationPage(new EventDetailPage(item, false)))),
+                            Command = new Command(()=> App.masterDetailPage.Detail = new NavigationPage(new EventDetailPage(item, false)){ BarBackgroundColor = Color.Green}),
                         }
                         },
                     }, 2, 3, _schemaHandler.ConvertStartTimeToRows(item.StartTime), 

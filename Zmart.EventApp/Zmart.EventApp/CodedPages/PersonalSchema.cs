@@ -122,7 +122,7 @@ namespace Zmart.EventApp.CodedPages
                             BackgroundColor = schemaHandler.CalendarColorManager(count),
                             Children = { new Label { FontSize = 10, Text = schemaHandler.TruncateTitle(item.Name) + "\n" + item.StartTime + "\n  -\n" + item.StopTime }, new Image { Source = "icon.png", HeightRequest = 20, WidthRequest = 20, HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.Start } },
                             GestureRecognizers = { new TapGestureRecognizer {
-                            Command = new Command(()=> App.masterDetailPage.Detail = new NavigationPage(new EventDetailPage(item, true))),
+                            Command = new Command(()=> App.masterDetailPage.Detail = new NavigationPage(new EventDetailPage(item, true)){ BarBackgroundColor = Color.Green}),
                         } },
                         }, 1, 2, schemaHandler.ConvertStartTimeToRows(item.StartTime), schemaHandler.ConvertStartTimeToRows(item.StartTime) + schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
                     }
@@ -135,7 +135,7 @@ namespace Zmart.EventApp.CodedPages
                             BackgroundColor = schemaHandler.CalendarColorManager2(count2),
                             Children = { new Label { FontSize = 10, Text = schemaHandler.TruncateTitle(item.Name) + "\n" + item.StartTime + "\n  -\n" + item.StopTime }, new Image { Source = "icon.png", HeightRequest = 20, WidthRequest = 20, HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.Start } },
                             GestureRecognizers = { new TapGestureRecognizer {
-                            Command = new Command(()=> App.masterDetailPage.Detail = new NavigationPage(new EventDetailPage(item, true))),
+                            Command = new Command(()=> App.masterDetailPage.Detail = new NavigationPage(new EventDetailPage(item, true)){ BarBackgroundColor = Color.Green}),
                         } },
                         }, 2, 3, schemaHandler.ConvertStartTimeToRows(item.StartTime), schemaHandler.ConvertStartTimeToRows(item.StartTime) + schemaHandler.ConvertStopTimeToRows(item.StopTime, item.StartTime));
                     }

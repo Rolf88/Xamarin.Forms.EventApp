@@ -91,10 +91,10 @@ namespace Zmart.EventApp.CodedPages
         {
             var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
             TabbedPage tabbedPage = new TabbedPage();
-
+            tabbedPage.BarBackgroundColor = Color.Green;
             foreach (var date in conference.Dates)
             {
-                tabbedPage.Children.Add(new NavigationPage(new PersonalSchema(date)) { Title = date });
+                tabbedPage.Children.Add(new NavigationPage(new PersonalSchema(date)) { Title = date, BarBackgroundColor = Color.Green });
             }
 
             App.masterDetailPage.Detail = tabbedPage;

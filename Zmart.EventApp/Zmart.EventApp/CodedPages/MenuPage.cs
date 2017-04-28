@@ -54,10 +54,18 @@ namespace Zmart.EventApp.CodedPages
         private void PersonalSchemaPage_Clicked()
         {
             TabbedPage tabbedPage = new TabbedPage();
+            tabbedPage.BarBackgroundColor = Color.Green;
+
+            NavigationPage navigationPage;
+
             var conference = JsonConvert.DeserializeObject<Conference>(App.Current.Properties["conference"].ToString());
+
             foreach (var date in conference.Dates)
             {
-                tabbedPage.Children.Add(new NavigationPage(new PersonalSchema(date)) { Title = date });
+                navigationPage = new NavigationPage(new PersonalSchema(date));
+                navigationPage.BarBackgroundColor = Color.Green;
+                navigationPage.Title = date;
+                tabbedPage.Children.Add(navigationPage);
             }
 
             App.masterDetailPage.Detail = tabbedPage;
@@ -66,13 +74,21 @@ namespace Zmart.EventApp.CodedPages
 
         private void AboutPage_Clicked()
         {
-            App.masterDetailPage.Detail = new NavigationPage(new AboutPage { Title = "About" }) { Title = "About" };
+            NavigationPage navigationPage = new NavigationPage(new AboutPage { Title = "About" });
+            navigationPage.Title = "About";
+            navigationPage.BarBackgroundColor = Color.Green;
+
+            App.masterDetailPage.Detail =  navigationPage;
             App.masterDetailPage.IsPresented = false;
         }
 
         private void RangingPage_Clicked()
         {
-            App.masterDetailPage.Detail = new NavigationPage(new RangingPage { Title = "Estimotes - Ranging" }) { Title = "Ranging" };
+            NavigationPage navigationPage = new NavigationPage(new RangingPage { Title = "Estimotes - Ranging" });
+            navigationPage.Title = "Ranging";
+            navigationPage.BarBackgroundColor = Color.Green;
+
+            App.masterDetailPage.Detail = navigationPage;
             App.masterDetailPage.IsPresented = false;
         }
 

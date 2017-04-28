@@ -8,6 +8,7 @@ using Zmart.EventApp.Models;
 using Microsoft.WindowsAzure.MobileServices;
 using Zmart.EventApp.CodedPages;
 using Newtonsoft.Json;
+using Acr.UserDialogs;
 
 namespace Zmart.EventApp
 {
@@ -17,12 +18,14 @@ namespace Zmart.EventApp
 
         //List of beacons to check for.
         public static IList<BeaconRegion> Regions { get; } = new List<BeaconRegion> {
-            new BeaconRegion("estimote",  "2AA96926-CB2E-A712-EDA1-4F248F971AD9", 6983, 12188)
+            new BeaconRegion("estimote",  "2AA96926-CB2E-A712-EDA1-4F248F971AD9", 6983, 12188),
+            new BeaconRegion("estimote", "2AA96926-CB2E-A712-EDA1-4F248F971AD9", 27327, 19295)
         };
 
         //Pages to be used again and again
         public static MasterDetailPage masterDetailPage;
         public static TabbedPage tabbedPage;
+        public static NavigationPage navigationPage;
 
         public App()
         {
@@ -31,6 +34,10 @@ namespace Zmart.EventApp
 
             //Chooses which page on startup
             StartUpNavigation();
+
+            if (!Application.Current.Properties.ContainsKey("firstLogin")) {
+                StartBeaconRanging();
+            }
         }
 
         private void StartUpNavigation() {
@@ -50,10 +57,14 @@ namespace Zmart.EventApp
             App.Current.Properties["conference"] = JsonConvert.SerializeObject(conference);
 
             tabbedPage = new TabbedPage();
-
+            tabbedPage.BarBackgroundColor = Color.Green;
+            
             foreach (var date in conference.Dates)
             {
-                tabbedPage.Children.Add(new NavigationPage(new CodedMainPage(date)) { Title = date });
+                navigationPage = new NavigationPage(new CodedMainPage(date));
+                navigationPage.BarBackgroundColor = Color.Green;
+                navigationPage.Title = date;
+                tabbedPage.Children.Add(navigationPage);
             }
 
             masterDetailPage = new MasterDetailPage
@@ -113,6 +124,30 @@ namespace Zmart.EventApp
             eventList.Add(new EventModel(16, "BestEvent", "blablabla", "icon.png", "01:00", "06:30", "track2", "1st Day"));
 
             return eventList;
+        }
+
+        private async void StartBeaconRanging()
+        {
+            EstimoteManager.Instance.Ranged += Instance_Ranged;
+            var status = await EstimoteManager.Instance.Initialize();
+            if (status == BeaconInitStatus.Success)
+            {
+                foreach (var region in Regions)
+                    EstimoteManager.Instance.StartRanging(region);
+            }
+        }
+
+        private void Instance_Ranged(object sender, IEnumerable<IBeacon> e)
+        {
+            foreach (var beacon in e)
+            {
+                if ((beacon.Proximity == Proximity.Immediate || beacon.Proximity == Proximity.Near) && !Application.Current.Properties.ContainsKey("firstLogin"))
+                {
+                    Application.Current.Properties["firstLogin"] = "true";
+                    UserDialogs.Instance.Alert("Welcome for the first time!!!!", "Welcome Message Box");
+                    EstimoteManager.Instance.StopAllRanging();
+                }
+            }
         }
 
         protected override void OnStart()
